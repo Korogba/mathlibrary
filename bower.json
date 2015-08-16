@@ -1,0 +1,17 @@
+{
+  "name": "mathlibrary",
+  "version": "0.0.0",
+  "authors": [
+    "Korogba <y_kabs@yahoo.com>"
+  ],
+  "description": "Mathematics Library",
+  "license": "MIT",
+  "homepage": "http://kabacorp.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
