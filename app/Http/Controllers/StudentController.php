@@ -8,7 +8,10 @@ use Exception;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
+use Input;
 use Response;
 use SearchIndex;
 
@@ -71,15 +74,31 @@ class StudentController extends Controller
             try
             {
                 $results = array('hits' => [Book::findOrFail($book_id)]);
+                $paginate = $this->paginate($results['hits'], 3);
             }catch (Exception $exception) {
                 abort(403);
             } finally {
-                return view('student/search', array('results' => $results, 'title' => 'Book Search'));
+                return view('student/search', array('results' => $paginate, 'total' => 1));
             }
         }
         $queryString = str_replace('+', ' ', $queryString);
         $results = $this->handleElasticSearch($queryString, 'book');
-        return view('student/search', array('results' => $results, 'title' => 'Book Search'));
+        $paginate = $this->paginate($results['hits'], 3);
+        return view('student/search', array('results' => $paginate, 'total' => count($results['hits'])));
+    }
+
+    /**
+     * @param $array
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
+    private function paginate($array, $perPage = 3)
+    {
+        $page = Input::get('page', 1);
+        $offset = ($page * $perPage) - $perPage;
+
+        return new LengthAwarePaginator(array_slice($array, $offset, $perPage, true),
+            count($array), $perPage, $page, ['path' => Paginator::resolveCurrentPath()]);
     }
 
     /**

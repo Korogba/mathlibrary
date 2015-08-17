@@ -25,7 +25,7 @@ Route::get('home', 'AccessController@home');
 Route::get('admin', 'AdminController@index');
 Route::get('admin/{id}/show', 'AdminController@show');
 Route::get('admin/search/{queryString?}/{book_id?}',  ['as' => 'searchResults', 'uses' => 'AdminController@show_results']);
-Route::get('admin/student/{queryString?}/{student_mail?}', 'AdminController@show_students');
+Route::get('admin/student', ['as' => 'searchStudent', 'uses' => 'AdminController@show_students']);
 Route::get('admin/student_details', ['as' => 'student', 'uses' => 'AdminController@student_details']);
 Route::post('admin/search', 'AdminController@search');
 Route::get('admin/receive', 'AdminController@receive');

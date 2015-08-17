@@ -9,8 +9,12 @@
                     Search Results
                 @endif
             </h2>
-            <p>{{ sizeof($books) }} result(s) returned</p>
-            @if(sizeof($books) == 0  && !isset($status))
+            @if($total != 0)
+                <p>Showing {{ $books->firstItem() }} - {{ $books->lastItem() }} of  {{ $total }} results.</p>
+            @else
+                <p>{{ $total }} results returned</p>
+            @endif
+            @if($total == 0  && !isset($status))
                 <a class="mb-xs mt-xs btn btn-default" href="{{ URL::previous() }}">
                     <i class="fa fa-chevron-left"></i> Back
                 </a>
@@ -18,13 +22,13 @@
         </div>
     </div>
 
-    @forelse(array_chunk($books, 4) as $row)
+    @forelse(array_chunk($books->getCollection()->all(), 3) as $row)
 
         <div class="row mb-xlg">
 
             @foreach($row as $book)
 
-                <div class="col-md-3">
+                <div class="col-md-4">
                     @if(auth()->user()->role == 1)
                         <a class="thumb-info thumb-info-lighten" href="{{ url('admin/'.$book->id.'/show') }}">
                     @else
@@ -52,5 +56,8 @@
         @endif
     @endforelse
 
+    <div class="align-center">
+        {!! $books->appends(Request::except('page'))->render() !!}
+    </div>
 
 </div>

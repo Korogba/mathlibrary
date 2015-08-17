@@ -4,6 +4,6 @@
 
     @include('student/partials/_nav')
 
-    @include('partials/_book_display', ['books' => $results['hits']])
+    @include('partials/_book_display', ['books' => $results, 'total' => $total])
 
 @endsection

@@ -13,6 +13,8 @@ use Carbon\Carbon;
 use Exception;
 use File;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Intervention\Image\Facades\Image;
@@ -232,39 +234,44 @@ class AdminController extends Controller
             try
             {
                 $results = array('hits' => [Book::findOrFail($book_id)]);
+                $paginate = $this->paginate($results['hits'], 3);
             }catch (Exception $exception){
                 abort(403);
             }finally{
-                return view('admin/search', array('results' => $results));
+                return view('admin/search', array('results' => $paginate, 'total'=>1));
             }
         }
         $queryString = str_replace('+', ' ', $queryString);
         $results = $this->handleElasticSearch($queryString, 'book');
-        return view('admin/search', array('results' => $results));
+        $paginate = $this->paginate($results['hits'], 3);
+        return view('admin/search', array('results' => $paginate, 'total'=>count($results['hits'])));
+    }
+
+    /**
+     * @param $array
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
+    private function paginate($array, $perPage = 3)
+    {
+        $page = Input::get('page', 1);
+        $offset = ($page * $perPage) - $perPage;
+
+        return new LengthAwarePaginator(array_slice($array, $offset, $perPage, true),
+            count($array), $perPage, $page, ['path' => Paginator::resolveCurrentPath()]);
     }
 
     /**
      * Display student search results
      * @param string $queryString
-     * @param null $student_mail
      * @return View
      */
-    public function show_students($queryString = '', $student_mail = null)
+    public function show_students($queryString = '')
     {
-        if(isset($student_mail))
-        {
-            try
-            {
-                $results = array('hits' => [User::findOrFail($student_mail)]);
-            }catch (Exception $exception){
-                abort(403);
-            }finally{
-                return view('admin/search_student', array('users' => $results['hits']));
-            }
-        }
-        $queryString = str_replace('+', ' ', $queryString);
+        $queryString = str_replace('+', ' ', Input::get('query', ''));
         $results = $this->handleElasticSearch($queryString, 'user');
-        return view('admin/search_student', array('students' => $results['hits']));
+        $paginate = $this->paginate($results['hits'], 3);
+        return view('admin/search_student', array('students' => $paginate, 'total'=>count($results['hits'])));
     }
 
     /**
@@ -352,18 +359,10 @@ class AdminController extends Controller
 
             $student_mail = $request->input('student_mail', null);
             $student_name = $request->input('student_name', null);
-            $student = User::where('email', $student_mail)->first();
 
-            if(is_null($student))
-            {
-                $keywords = trim( $student_name );
-                $queryString = str_replace(' ', '+', $keywords);
-                return redirect(url('/admin/student', ['queryString'=>$queryString]));
-            }
-            else
-            {
-                return redirect(url('/admin/student', ['queryString'=>'found', 'student_mail'=>$student->email]));
-            }
+            $keywords = trim( $student_name.' '.$student_mail );
+            $queryString = str_replace(' ', '+', $keywords);
+            return redirect(route('searchStudent', ['query'=>$queryString]));
         }
     }
 

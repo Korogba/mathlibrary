@@ -9,8 +9,12 @@
         <div class="row">
             <div class="col-md-6">
                 <h2 class="mb-none">Search Results<small> Students</small></h2>
-                <p>{{ sizeof($students) }} result(s) returned</p>
-                @if(sizeof($students) == 0)
+                @if($total != 0)
+                    <p>Showing {{ $students->firstItem() }} - {{ $students->lastItem() }} of  {{ $total }} results.</p>
+                @else
+                    <p>{{ $total }} results returned</p>
+                @endif
+                @if($total == 0)
                     <a class="mb-xs mt-xs btn btn-default" href="{{ URL::previous() }}">
                         <i class="fa fa-chevron-left"></i> Back
                     </a>
@@ -18,7 +22,7 @@
             </div>
         </div>
 
-        @foreach(array_chunk($students, 4) as $row)
+        @foreach(array_chunk($students->getCollection()->all(), 4) as $row)
 
             <div class="row">
 
@@ -48,6 +52,10 @@
             </div>
 
         @endforeach
+
+        <div class="align-center">
+            {!! $students->appends(Request::except('page'))->render() !!}
+        </div>
 
     </div>
 

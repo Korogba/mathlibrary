@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>We Can See You.</title>
+    <title>Eyes On You.</title>
 
     <link href="//fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
 
@@ -41,6 +41,7 @@
 <div class="container">
     <div class="content">
         <div class="title">What you tryna do? <br><hr> Page Not Found!</div>
+        <h4>Contact Admin if this persists :)</h4>
     </div>
 </div>
 </body>
