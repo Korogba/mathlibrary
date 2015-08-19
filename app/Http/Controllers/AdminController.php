@@ -69,8 +69,10 @@ class AdminController extends Controller
      */
     public function overdue()
     {
-        $book = Book::overdue()->all();
-        return view('admin.overdue', compact('book'));
+        $all = Book::overdue()->all();
+        $book = $this->paginate($all, 3);
+        $total = count($all);
+        return view('admin.overdue', compact('book', 'total'));
     }
 
     /**
@@ -79,8 +81,10 @@ class AdminController extends Controller
      */
     public function reserved()
     {
-        $book = Book::reserved()->all();
-        return view('admin.reserved', compact('book'));
+        $all = Book::reserved()->all();
+        $book = $this->paginate($all, 3);
+        $total = count($all);
+        return view('admin.reserved', compact('book', 'total'));
     }
 
     /**
