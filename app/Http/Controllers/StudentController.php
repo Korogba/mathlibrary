@@ -178,14 +178,14 @@ class StudentController extends Controller
      */
     public function reservation($book_id)
     {
-        if(auth()->user()->transact->get($book_id) != null)
+        if(auth()->user()->transact->find($book_id) != null)
         {
             auth()->user()->transact()->detach($book_id);
             flash()->success('Reservation Cancelled');
             return redirect()->back();
         }
         auth()->user()->transact()->attach($book_id, ['type' => 'reservation', 'expires' => Carbon::now()->addDays(2), 'status' => 1]);
-        flash()->success('Reservation Cancelled');
+        flash()->success('Reservation Made');
         return redirect()->back();
     }
 
