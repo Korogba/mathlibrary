@@ -135,21 +135,21 @@
                                     <tbody>
                                         @foreach($book->getLoan() as $loanee)
                                             <tr>
-                                                <td> <a href="">{{ $loanee->name }}</a> </td>
+                                                <td> <a href="{{ route('student', ['email' => $loanee->email]) }}">{{ $loanee->name }}</a> </td>
                                                 <td class="success"> Loaned </td>
                                                 <td> <a href="{{ action('AdminController@update_receive', [$loanee->id, $book->id]) }}">Receive</a> </td>
                                             </tr>
                                          @endforeach
                                         @foreach($book->getReservations() as $reserved)
                                             <tr>
-                                                <td> <a href="#">{{ $reserved->name }}</a> </td>
+                                                <td> <a href="{{ route('student', ['email' => $reserved->email]) }}">{{ $reserved->name }}</a> </td>
                                                 <td class="info"> Reserved </td>
                                                 <td> <a href="{{ action('AdminController@update_loan', [$reserved->id, $book->id]) }}">Loan out</a> </td>
                                             </tr>
                                         @endforeach
                                         @foreach($book->getOverdue() as $overdue)
                                             <tr>
-                                                <td> <a href="#">{{ $overdue->name }}</a> </td>
+                                                <td> <a href="{{ route('student', ['email' => $overdue->email]) }}">{{ $overdue->name }}</a> </td>
                                                 <td class="danger"> Overdue </td>
                                                 <td> <a href="{{ action('AdminController@update_receive', [$overdue->id, $book->id]) }}">Receive</a> </td>
                                             </tr>

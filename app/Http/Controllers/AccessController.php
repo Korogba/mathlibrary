@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
 class AccessController extends Controller
 {
     /**
-     * Contructor to control access to the application
-     *
+     * Constructor to control access to the application
      */
     function __construct()
     {
@@ -20,16 +16,11 @@ class AccessController extends Controller
 
     /**
      * Home directory is called to redirect signed in users to directories
-     *  Or redirect guests to log-in page
+     * Or redirect guests to log-in page
      */
     public function home(){
         if(auth()->check()){
-            if($this->isAdmin()){
-                return redirect('/admin');
-            }
-            else{
-                return redirect('/student');
-            }
+            return $this->isAdmin() ? redirect('/admin') : redirect('/student');
         }
         else{
             redirect('/');
@@ -39,7 +30,7 @@ class AccessController extends Controller
     /**
      * Helper function for the home() method
      * Does the actual check and re-direction
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return bool
      */
 
     private function isAdmin(){

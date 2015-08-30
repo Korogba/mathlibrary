@@ -139,7 +139,7 @@
 
             <div class="row">
 
-                <div class="col-md-6">
+                <div class="col-md-6 col-md-offset-3">
                     <div class="featured-boxes">
                         <div class="featured-box featured-box-primary align-left mt-xlg">
                             <div class="box-content">
@@ -180,10 +180,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    @include('partials.errors');
-                </div>
             </div>
+
+            @include('partials.errors');
 
         </div>
 
