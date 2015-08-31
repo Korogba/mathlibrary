@@ -10,8 +10,8 @@
 
         @if(auth()->user()->transact->count() != 0)
 
-            <ul class="nav nav-pills sort-source" data-sort-id="portfolio" data-option-key="filter">
-                <li data-option-value="*" class="active"><a href="#">Show All</a></li>
+            <ul class="nav nav-pills sort-source" data-sort-id="portfolio" data-option-key="filter" data-plugin-options='{"filter": ".reserved, .loaned"}'>
+                <li data-option-value=".reserved, .loaned" class="active"><a href="#">Show All</a></li>
                 @if(sizeof($reservation->all()) != 0)
                     <li data-option-value=".reserved"><a href="#">Reserved Books</a></li>
                 @endif
