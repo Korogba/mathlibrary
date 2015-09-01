@@ -148,8 +148,13 @@ class AdminController extends Controller
         }catch (Exception $exception) {
             abort(403);
         }finally{
+            if(!is_null($book->image) && $request->hasFile('attachment'))
+            {
+                $this->deleteImage($book);
+            }
             $author = $this->getAuthor(Input::get('author')['first_name'], Input::get('author')['last_name']);
             $publisher = $this->getPublisher(Input::get('publisher')['name']);
+            $request['isbn'] = $book->isbn;
             if($request->hasFile('attachment'))
             {
                 $request['image'] = $this->imageUpload($request);
@@ -267,10 +272,9 @@ class AdminController extends Controller
 
     /**
      * Display student search results
-     * @param string $queryString
      * @return View
      */
-    public function show_students($queryString = '')
+    public function show_students()
     {
         $queryString = str_replace('+', ' ', Input::get('query', ''));
         $results = $this->handleElasticSearch($queryString, 'user');
@@ -479,8 +483,9 @@ class AdminController extends Controller
                 if(!File::exists($path)){
                     File::makeDirectory($path);
                 }
-                Image::make($request->file('attachment'))->fit(447, 447)->save($path.'/'.$request->isbn.'.jpg');
-                return 'uploads/'.strtolower(Input::get('author')['first_name'].'_'.Input::get('author')['last_name']).'/'.$request->isbn.'.jpg';
+                $name = uniqid($request->isbn, false);
+                Image::make($request->file('attachment'))->fit(447, 447)->save($path.'/'.$name.'.jpg');
+                return 'uploads/'.strtolower(Input::get('author')['first_name'].'_'.Input::get('author')['last_name']).'/'.$name.'.jpg';
             }
             else{
                 return null;
@@ -488,6 +493,18 @@ class AdminController extends Controller
         }
         else{
             return null;
+        }
+    }
+
+    /**
+     * Delete the image file for this book in uploads to enable edit
+     * @param $book
+     */
+    private function deleteImage($book)
+    {
+        if(File::exists($book->image))
+        {
+            File::delete($book->image);
         }
     }
 
