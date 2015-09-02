@@ -23,8 +23,6 @@
 
                     <hr class="tall">
 
-                    @include('partials.errors')
-
                 </div>
             </div>
 
@@ -87,10 +85,12 @@
 
                     <hr class="tall">
 
+                    @include('partials.errors')
+
                     <div class="tabs tabs-product">
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#bookInfo" data-toggle="tab">Aditional Information</a></li>
-                            <li><a href="#bookReviews" data-toggle="tab">Reviews (2)</a></li>
+                            <li><a href="#bookReviews" data-toggle="tab">Reviews ({{ $comment->count() }})</a></li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="bookInfo">
@@ -125,46 +125,77 @@
                             </div>
                             <div class="tab-pane" id="bookReviews">
                                 <ul class="comments">
-                                    <li>
-                                        <div class="comment">
-                                            <div class="img-thumbnail">
-                                                <img class="avatar" alt="" src="{{ asset('img/avatar-2.jpg') }}">
-                                            </div>
-                                            <div class="comment-block">
-                                                <div class="comment-arrow"></div>
-														<span class="comment-by">
-															<strong>John Doe</strong>
-															<span class="pull-right">
-																<div title="Rated 5.00 out of 5" class="star-rating">
-                                                                    <span style="width:100%"><strong class="rating">5.00</strong> out of 5</span>
-                                                                </div>
-															</span>
-														</span>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae, gravida pellentesque urna varius vitae. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim ornare nisi, vitae mattis nulla ante id dui.</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <hr class="tall">
-                                <h4 class="heading-primary">Add a review</h4>
-                                <div class="row">
-                                    <div class="col-md-12">
-
-                                        <form action="" id="submitReview" method="post">
+                                    @if( !$comment->isEmpty() )
+                                        @foreach($comment as $review)
+                                            <li>
+                                                <div class="comment">
+                                                    <div class="img-thumbnail">
+                                                        <img class="avatar" alt="" src="{{ asset('img/avatar-2.jpg') }}">
+                                                    </div>
+                                                    <div class="comment-block">
+                                                        <div class="comment-arrow"></div>
+                                                            <span class="comment-by">
+                                                                <strong>{{ $review->user->name }}</strong>
+                                                                <span class="pull-right">
+                                                                    <div title="Rated {{ $review->rating }} out of 5" class="star-rating">
+                                                                        <span style="{{ 'width:'.($review->rating*20).'%' }}"><strong class="rating">{{ $review->rating }}</strong> out of 5</span>
+                                                                    </div>
+                                                                </span>
+                                                            </span>
+                                                        <p> {{ $review->comment }} </p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    @else
+                                        <li>
                                             <div class="row">
-                                                <div class="form-group">
-                                                    <div class="col-md-12">
-                                                        <label>Review *</label>
-                                                        <textarea maxlength="5000" data-msg-required="Please enter your message." rows="10" class="form-control" name="message" id="message"></textarea>
+                                                <div class="col-md-6 comment">
+                                                    <div class="comment-block">
+                                                        <p>No reviews made</p>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </li>
+                                    @endif
+                                </ul>
+                                <hr class="tall">
+                                <h4 class="heading-primary">{{ $my_comment ? 'Edit':'Add' }} review</h4>
+                                <div class="row">
+                                    <div class="col-md-12">
+
+                                        {!! Form::open(['url'=> $my_comment ? 'student/edit_review':'student/review']) !!}
+
                                             <div class="row">
-                                                <div class="col-md-12">
-                                                    <input type="submit" value="Submit Review" class="btn btn-primary" data-loading-text="Loading...">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <label>Comment </label>
+                                                        <input type="hidden" name="book" value="{{ $book->id }}">
+                                                        <textarea maxlength="5000" required rows="5" class="form-control" name="comment">{{ $my_comment ? $comment->where('user_id', auth()->user()->id)->first()->comment: '' }}</textarea>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </form>
+
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <div class="col-md-6">
+                                                        <label>Rating </label>
+                                                        <input type="number" name="rating" data-max="5" data-min="1"
+                                                               class="rating form-control" data-clearable="clear" data-icon-lib="fa"
+                                                               data-active-icon="fa-star" data-inactive-icon="fa-star-o"
+                                                               data-empty-value="0" data-clearable-icon="fa-trash-o">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <input type="submit" value="{{ $my_comment ? 'Edit':'Add' }} Review" class="btn btn-primary pull-right mb-xl" data-loading-text="Loading...">
+                                                </div>
+                                            </div>
+
+                                        {!! Form::close() !!}
+
                                     </div>
 
                                 </div>
@@ -247,5 +278,12 @@
         </div>
 
     </div>
+
+@endsection
+
+@section('footer')
+
+    <!-- Page specific script for ratings selection -->
+    <script src="{{ asset('js/bootstrap-rating-input.js') }}"></script>
 
 @endsection

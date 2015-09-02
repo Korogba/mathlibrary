@@ -83,7 +83,7 @@
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#bookInfo" data-toggle="tab">Aditional Information</a></li>
                             <li><a href="#bookRecords" data-toggle="tab">Book Records</a></li>
-                            <li><a href="#bookReviews" data-toggle="tab">Reviews (2)</a></li>
+                            <li><a href="#bookReviews" data-toggle="tab">Reviews ({{ $comment->count() }})</a></li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="bookInfo">
@@ -164,35 +164,51 @@
                             </div>
                             <div class="tab-pane" id="bookReviews">
                                 <ul class="comments">
-                                    <li>
-                                        <div class="row">
 
-                                            <div class="col-md-9">
-                                                <div class="comment">
-                                                    <div class="img-thumbnail">
-                                                        <img class="avatar" alt="" src="{{ url('img/avatar-2.jpg') }}">
+                                    @if( !$comment->isEmpty() )
+                                        @foreach($comment as $review)
+                                            <li>
+                                                <div class="row">
+
+                                                    <div class="col-md-9">
+                                                        <div class="comment">
+                                                            <div class="img-thumbnail">
+                                                                <img class="avatar" alt="" src="{{ asset('img/avatar-2.jpg') }}">
+                                                            </div>
+                                                            <div class="comment-block">
+                                                                <div class="comment-arrow"></div>
+                                                                    <span class="comment-by">
+                                                                        <strong>{{ $review->user->name }}</strong>
+                                                                        <span class="pull-right">
+                                                                            <div title="Rated {{ $review->rating }} out of 5" class="star-rating">
+                                                                                <span style="{{ 'width:'.($review->rating*20).'%' }}"><strong class="rating">{{ $review->rating }}</strong> out of 5</span>
+                                                                            </div>
+                                                                        </span>
+                                                                    </span>
+                                                                <p> {{ $review->comment }} </p>
+                                                            </div>
+                                                        </div>
                                                     </div>
+
+                                                    <div class="col-md-3">
+                                                        <a class="btn btn-lg btn-danger" href="{{ action('AdminController@delete_comment', [$review->id]) }}">Delete Review</a>
+                                                    </div>
+
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    @else
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-md-6 comment">
                                                     <div class="comment-block">
-                                                        <div class="comment-arrow"></div>
-														<span class="comment-by">
-															<strong>John Doe</strong>
-															<span class="pull-right">
-																<div title="Rated 5.00 out of 5" class="star-rating">
-                                                                    <span style="width:100%"><strong class="rating">5.00</strong> out of 5</span>
-                                                                </div>
-															</span>
-														</span>
-                                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae, gravida pellentesque urna varius vitae. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim ornare nisi, vitae mattis nulla ante id dui.</p>
+                                                        <p>No reviews made</p>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </li>
+                                    @endif
 
-                                            <div class="col-md-3">
-                                                <a class="btn btn-lg btn-danger" href="#">Delete Review</a>
-                                            </div>
-
-                                        </div>
-                                    </li>
                                 </ul>
                             </div>
                         </div>

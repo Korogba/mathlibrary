@@ -149,6 +149,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     /**
+     * A user can make several reviews/comment.
+     * Get this user's reviews
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comment()
+    {
+        return $this->hasMany('App\Comment');
+    }
+
+    /**
      * Return the id of the searchable subject.
      *
      * @return string

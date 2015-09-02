@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Comment;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -148,7 +149,9 @@ class StudentController extends Controller
             abort(403);
         } finally {
             $status = auth()->user()->getStatus($book->id);
-            return view('student.book_details', compact('book', 'status'));
+            $comment = $book->comment;
+            $my_comment = $this->hasReview($comment);
+            return view('student.book_details', compact('book', 'status', 'comment', 'my_comment'));
         }
 
     }
@@ -187,6 +190,67 @@ class StudentController extends Controller
         auth()->user()->transact()->attach($book_id, ['type' => 'reservation', 'expires' => Carbon::now()->addDays(2), 'status' => 1]);
         flash()->success('Reservation Made');
         return redirect()->back();
+    }
+
+    /**
+     * Handle post request to add a review to a book
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function review(Request $request)
+    {
+        $this->validate($request, [
+            'comment' => 'required',
+            'book' => 'required'
+        ]);
+        Comment::create([
+            'comment' => $request->input('comment'),
+            'book_id' => $request->input('book'),
+            'rating' => $request->input('rating'),
+            'user_id' => auth()->user()->id
+        ]);
+        flash()->success('Review Saved!');
+        return redirect()->back();
+    }
+
+    /**
+     * Handle post request to add a review to a book
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function edit_review(Request $request)
+    {
+        $this->validate($request, [
+            'comment' => 'required',
+            'book' => 'required'
+        ]);
+        $comment = Comment::where([
+                    'book_id' => $request->input('book'),
+                    'user_id' => auth()->user()->id
+                ])->first();
+        $comment->comment = $request->input('comment');
+        $comment->rating = $request->input('rating');
+        $comment->save();
+        flash()->success('Review Edited!');
+        return redirect()->back();
+    }
+
+    /**
+     * Check if this user has reviewed book to be displayed
+     * @param $comments
+     * @return bool
+     */
+    private function hasReview($comments)
+    {
+        $exists = false;
+        foreach($comments as $comment)
+        {
+            if($comment->user->id == auth()->user()->id)
+            {
+                $exists = true;
+            }
+        }
+        return $exists;
     }
 
     /**
@@ -292,4 +356,5 @@ class StudentController extends Controller
         }
         return (['hits' => $book]);
     }
+
 }

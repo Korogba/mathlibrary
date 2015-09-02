@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Author;
 use App\Book;
+use App\Comment;
 use App\Http\Requests\AddBookRequest;
 use App\Publisher;
 
@@ -226,7 +227,8 @@ class AdminController extends Controller
         }catch (Exception $exception){
             abort(403);
         }finally{
-            return view('admin.book_details', compact('book'));
+            $comment = $book->comment;
+            return view('admin.book_details', compact('book', 'comment'));
         }
     }
 
@@ -420,6 +422,25 @@ class AdminController extends Controller
         }
 
     }
+
+    /**
+     * Helper function to delete comment
+     * @param $comment_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function delete_comment($comment_id)
+    {
+        try{
+            $comment = Comment::findOrFail($comment_id);
+        }catch (Exception $exception){
+            abort(403);
+        }finally{
+            $comment->delete();
+            flash()->success('Comment deleted');
+            return redirect()->back();
+        }
+    }
+
     /**
      * Handle request to give out book to student
      * @param Request $request

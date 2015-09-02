@@ -42,6 +42,7 @@ Route::get('admin/{id}/edit', 'AdminController@edit');
 Route::post('admin/edit/{id}', 'AdminController@editbook');
 Route::get('admin/update_reserve/{student_id}/{book_id}',  ['as' => 'updateReserve', 'uses' => 'AdminController@update_receive']);
 Route::get('admin/update_loan/{student_id}/{book_id}',  ['as' => 'updateLoan', 'uses' => 'AdminController@update_loan']);
+Route::get('admin/delete_comment/{comment_id}', 'AdminController@delete_comment');
 
 
 Route::get('student', 'StudentController@index');
@@ -50,6 +51,8 @@ Route::post('student/search', 'StudentController@search');
 Route::get('student/records', 'StudentController@records');
 Route::get('student/profile', 'StudentController@profile');
 Route::post('student/profile', 'StudentController@update_profile');
+Route::post('student/review', 'StudentController@review');
+Route::post('student/edit_review', 'StudentController@edit_review');
 Route::get('student/{id}/show', 'StudentController@show_book');
 Route::get('student/reserve/{id}', 'StudentController@reservation');
 

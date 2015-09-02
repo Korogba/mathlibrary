@@ -179,6 +179,16 @@ class Book extends Model implements Searchable
     }
 
     /**
+     * A book can have several reviews/comment.
+     * Get this book's reviews
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comment()
+    {
+        return $this->hasMany('App\Comment');
+    }
+
+    /**
      * Returns an array with properties which must be indexed.
      *
      * @return array
