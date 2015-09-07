@@ -617,6 +617,7 @@ class AdminController extends Controller
     /**
      * Extract total hits and Object ids from returned array
      * @param $searchResults
+     * @param $type
      * @return array
      */
     private function getObjAndTotal($searchResults, $type)
