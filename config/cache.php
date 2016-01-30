@@ -15,6 +15,14 @@ return [
 
 	$secrets = json_decode(file_get_contents($_SERVER['APP_SECRETS']), true);
 	$mc      = $secrets['MEMCACHE'];
+	$host => $mc['COUNT'] == 1
+                ? [
+                    ['host' => $mc['HOST1'], 'port' => $mc['PORT1'], 'weight' => 100],
+                ]
+                : [
+                    ['host' => $mc['HOST1'], 'port' => $mc['PORT1'], 'weight' => 100],
+                    ['host' => $mc['HOST2'], 'port' => $mc['PORT2'], 'weight' => 100],
+        ];
 
     /*
     |--------------------------------------------------------------------------
@@ -63,10 +71,7 @@ return [
 
         'memcached' => [
             'driver'  => 'memcached',
-            'servers' => [
-                [
-                    'host' => '127.0.0.1', 'port' => 11211, 'weight' => 100,
-                ],
+            'servers' => $host,
             ],
         ],
 
