@@ -14,8 +14,8 @@ return
                  */
                 'hosts' =>
                     [
-                        'host' => 'www.indexdepot.com/elasticsearch/f6f04bd9645ce8c4/',
-						'port' => '80',
+                        'host' => 'http://57fbee3fbc56dc319d115bb29fc78064.eu-west-1.aws.found.io/',
+						'port' => '9200',
                     ],
 
                 /*
