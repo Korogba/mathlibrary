@@ -14,7 +14,7 @@ return
                  */
                 'hosts' =>
                     [
-                        'localhost:9200',
+                        'http://www.indexdepot.com/elasticsearch/f6f04bd9645ce8c4/',
                     ],
 
                 /*
