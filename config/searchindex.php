@@ -14,8 +14,7 @@ return
                  */
                 'hosts' =>
                     [
-                        'host' => 'www.indexdepot.com',
-						'path' => '/elasticsearch/f6f04bd9645ce8c4/',
+                        'host' => 'www.indexdepot.com/elasticsearch/f6f04bd9645ce8c4/',
 						'port' => '80',
                     ],
 
