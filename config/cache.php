@@ -2,28 +2,6 @@
 
 return [
 
-/*
-    |--------------------------------------------------------------------------
-    | Settings from fortrabbit
-    |--------------------------------------------------------------------------
-    |
-    | Memcache is integrated from inside the App. 
-	| See in these code examples how to add servers and tell your App to use it. 
-	| Tinkering plans run on a single Node, production plans always on multiple Nodes. 
-    |
-    */
-
-	$secrets = json_decode(file_get_contents($_SERVER['APP_SECRETS']), true);
-	$mc      = $secrets['MEMCACHE'];
-	$host => $mc['COUNT'] == 1
-                ? [
-                    ['host' => $mc['HOST1'], 'port' => $mc['PORT1'], 'weight' => 100],
-                ]
-                : [
-                    ['host' => $mc['HOST1'], 'port' => $mc['PORT1'], 'weight' => 100],
-                    ['host' => $mc['HOST2'], 'port' => $mc['PORT2'], 'weight' => 100],
-        ];
-
     /*
     |--------------------------------------------------------------------------
     | Default Cache Store
@@ -71,7 +49,10 @@ return [
 
         'memcached' => [
             'driver'  => 'memcached',
-            'servers' => $host,
+            'servers' => [
+                [
+                    'host' => '127.0.0.1', 'port' => 11211, 'weight' => 100,
+                ],
             ],
         ],
 
