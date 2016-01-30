@@ -54,10 +54,10 @@ return [
 
         'mysql' => [
             'driver'    => 'mysql',
-            'host'      => env('DB_HOST', 'localhost'),
-            'database'  => env('DB_DATABASE', 'library'),
-            'username'  => env('DB_USERNAME', 'root'),
-            'password'  => env('DB_PASSWORD', ''),
+            'host'      => env('DB_HOST', 'mathlibrary.mysql.eu2.frbit.com'),
+            'database'  => env('DB_DATABASE', 'mathlibrary'),
+            'username'  => env('DB_USERNAME', 'mathlibrary'),
+            'password'  => env('DB_PASSWORD', '.pUB6fq8x.g6zFfNEsXHcO-d'),
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
