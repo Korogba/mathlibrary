@@ -14,7 +14,7 @@ return
                  */
                 'hosts' =>
                     [
-                        'http://www.indexdepot.com/elasticsearch/f6f04bd9645ce8c4/',
+                        'http://www.indexdepot.com/elasticsearch/f6f04bd9645ce8c4:80',
                     ],
 
                 /*
