@@ -14,7 +14,7 @@ return
                  */
                 'hosts' =>
                     [
-                        'http://www.indexdepot.com/elasticsearch/f6f04bd9645ce8c4',
+                        'www.indexdepot.com',
                     ],
 					
 				/*
@@ -24,6 +24,15 @@ return
                     [
                         80,
                     ],
+					
+				/*
+                 * Specify the port(s) where elasticsearch is running.
+                 */
+                'path' =>
+                    [
+                        '/elasticsearch/f6f04bd9645ce8c4/',
+                    ],
+					
 
                 /*
                  * Specify the path where Elasticsearch will write it's logs.
