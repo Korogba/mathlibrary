@@ -8,11 +8,11 @@
 
 ## Laravel ##
 
-Mathlibrary is built using the Laravel PHP Framework. Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs). Laravel is an excellent framework for PHP and web development. It greatly reduced the development time of this application. To use Laravel, get [composer](https://getcomposer.org/) and check the documentation of [Laravel](http://laravel.com/docs/5.1). Or get [PHPStorm](https://www.jetbrains.com/phpstorm/). With PHPStorm you can just pull in this project from this repository and it will handle your set-ups for you. Easy as you like!
+Mathlibrary is built using the Laravel PHP Framework. Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs). Laravel is an excellent framework for PHP and web development. To use Laravel, get [composer](https://getcomposer.org/) and check the documentation of [Laravel](http://laravel.com/docs/5.1). Or get [PHPStorm](https://www.jetbrains.com/phpstorm/). With PHPStorm you can just pull in this project from this repository and it will handle your set-ups for you. Easy as you like!
 
 ## Laracasts ##
 
-If you will like to watch video tutorials on Laravel, you can check out this excellent site [Laracast](https://laracasts.com). Some of the tutorials are not free but there is a free introductory series on Laravel called [Laravel 5 Fundamentals](https://laracasts.com/series/laravel-5-fundamentals). Although I have the downloaded series on my laptop, unfortunately I can't exactly hand them over to you. There's 27 short videos in the series.
+If you will like to watch video tutorials on Laravel, you can check out this excellent site [Laracast](https://laracasts.com). Some of the tutorials are not free but there is a free introductory series on Laravel called [Laravel 5 Fundamentals](https://laracasts.com/series/laravel-5-fundamentals). 
 
 ## SearchIndex ##
 
@@ -20,8 +20,8 @@ In order not to re-invent the wheel as they say, I used a package called [search
 
 ## MySql ##
 
-I have also uploaded the sql file from the database that I used in testing the application during development. You might have to find a way to add additional sample data because just a few users and books have been added (I must add majorly because you did not get me the list from the library as I requested). From the administrator account, you can of course create new users/books and add them as you like. But this is tedious although adding them this way automatically saves them to the elasticsearch index as well. If you do find another way, kindly ensure that whatever is saved in the sql database is also saved in the elasticsearch index for consistency. If you like, you can make do with the little already saved.
+I have also uploaded the sql file from the database that I used in testing the application during development. You might have to find a way to add additional sample data because just a few users and books have been added. From the administrator account, you can of course create new users/books and add them as you like. But this is tedious although adding them this way automatically saves them to the elasticsearch index as well. If you do find another way, kindly ensure that whatever is saved in the sql database is also saved in the elasticsearch index for consistency. If you like, you can make do with the little already saved.
 
 ## Miscellaneous ##
 
-I can assure you that this application will have bugs in it. I have not tested it extensively, so you will have to check it and let me know when it acts as it should not. The advantage of using this kind of repository is I can easily make changes and you just pull it in! Kindly note that the username for sign-in is the email address of the users and the default password is 'password'.
+Kindly note that the username for sign-in is the email address of the users and the default password is 'password'.
